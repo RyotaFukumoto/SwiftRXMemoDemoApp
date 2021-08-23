@@ -10,9 +10,9 @@ import Combine
 
 class MemoViewModel: ObservableObject {
 
-    @Published private(set) var memos: [MemoDataModel] = Array(MemoDataModel.findAll())
+    @Published private(set) var memos: [MemoDto] = Array(MemoDao.findAll())
     @Published var memoTextField = ""
-    @Published var deleteMemo: MemoDataModel?
+    @Published var deleteMemo: MemoDto?
     @Published var isDeleteAllTapped = false
 
     private var addMemoTask: AnyCancellable?
@@ -25,10 +25,10 @@ class MemoViewModel: ObservableObject {
                 guard !text.isEmpty else {
                     return
                 }
-                let memo = MemoDataModel()
+                let memo = MemoDto()
                 memo.text = text
                 self.memos.append(memo)
-                MemoDataModel.add(memo)
+                MemoDao.addMemo(memo: memo)
             }
         deleteMemoTask = self.$deleteMemo
             .sink() { memo in
@@ -37,13 +37,13 @@ class MemoViewModel: ObservableObject {
                 }
                 if let index = self.memos.firstIndex(of: memo) {
                     self.memos.remove(at: index)
-                    MemoDataModel.delete(memo)
+                    MemoDao.deleteMemo(memo: memo)
                 }
             }
         deleteAllMemoTask = self.$isDeleteAllTapped
             .sink() { isDeleteAllTapped in
                 if (isDeleteAllTapped) {
-                    MemoDataModel.delete(self.memos)
+                    MemoDao.deleteAllMemo()
                     self.memos.removeAll()
                     self.isDeleteAllTapped = false
                 }

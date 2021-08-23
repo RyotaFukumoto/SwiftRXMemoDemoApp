@@ -80,29 +80,7 @@ struct MemoListView: View {
     }
 }
 
-// MARK: MemoRowView
-struct MemoRowView: View {
-    var memo: MemoDataModel
-
-    var body: some View {
-        VStack(alignment: .leading) {
-            Text(formatDate(memo.postedDate))
-                .font(.caption)
-                .fontWeight(.bold)
-            Text(verbatim: memo.text)
-                .font(.body)
-        }
-    }
-
-    func formatDate(_ date : Date) -> String {
-        let formatter = DateFormatter()
-        formatter.dateStyle = .long
-        formatter.timeStyle = .medium
-        formatter.locale = Locale(identifier: "ja_JP")
-        return formatter.string(from: date)
-    }
-}
-struct ContentView_Previews: PreviewProvider {
+struct SwiftUIView_Previews: PreviewProvider {
     static var previews: some View {
         MemoListView()
     }
